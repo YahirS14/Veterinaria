@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react';
+import Error from './error';
 
-function Formulario() {
+function Formulario({pacientes, setPacientes, paciente}) {
 
   //Es state se declara en la parte superior del componente
   const [nombre, setNombre] = useState('');//-> variable, set modificador valore inicial del estado
@@ -9,7 +10,14 @@ function Formulario() {
   const [fecha, setFecha] = useState('');
   const [sintomas, setSintomas] = useState('');
 
-  const [error, setError] = useState(false);
+  const generarID = () =>{
+    const random = Math.random().toString(36);
+    const fecha = Date.now().toString(36);
+
+    return random + fecha;
+  };
+
+  const [error, setError] = useState(false); 
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -21,6 +29,25 @@ function Formulario() {
     }
 
     setError(false);
+
+    //Objeto de Paciente
+    const objPaciente = {
+      nombre,
+      propietario,
+      email,
+      fecha,
+      sintomas,
+      id: generarID()
+    }
+
+    setPacientes([...pacientes, objPaciente]);
+
+    //Reiniciar el Form
+    setNombre('');
+    setPropietario('');
+    setEmail('');
+    setFecha('');
+    setSintomas('');
   }
 
   return (
@@ -38,13 +65,7 @@ function Formulario() {
           className='bg-white shadow-md rounded-lg py-10 px-5 mb-10 m-8'
         >
 
-          {error && 
-          
-            <div className='bg-red-800 text-white text-center p-3 uppercase
-              font-bold mb-3 rounded'>
-              <p>Todos los campos son obligatorios</p>
-            </div>
-          }
+          {error && <Error><p>Todos los campos son obligatorios</p></Error>}
 
           <div className='mb-5'>
             <label htmlFor='mascota' className='block text-gray-700 uppercase font-bold'>

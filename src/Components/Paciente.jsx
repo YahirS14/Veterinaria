@@ -1,25 +1,28 @@
-function Paciente() {
+function Paciente({paciente, setPaciente}) {
+
+    const {nombre, propietario, email, fecha, sintomas} = paciente;
+
     return (
 
         <div className="m-8 bg-white shadow-md px-5 py-10 rounded-xl">
             <p className="font-bold mb-3 text-gray-700 uppercase">Nombre:{''}
-                <span className="font-normal normal-case">Lia</span>
+                <span className="font-normal normal-case">{nombre}</span>
             </p>
 
             <p className="font-bold mb-3 text-gray-700 uppercase">Propietario:{''}
-                <span className="font-normal normal-case">Yahir</span>
+                <span className="font-normal normal-case">{propietario}</span>
             </p>
 
             <p className="font-bold mb-3 text-gray-700 uppercase">Email:{''}
-                <span className="font-normal normal-case">yahiratzin@gmail.com</span>
+                <span className="font-normal normal-case">{email}</span>
             </p>
 
             <p className="font-bold mb-3 text-gray-700 uppercase">Fecha Alta:{''}
-                <span className="font-normal normal-case">10/05/2022</span>
+                <span className="font-normal normal-case">{fecha}</span>
             </p>
 
             <p className="font-bold mb-3 text-gray-700 uppercase">Sintomas:{''}
-                <span className="font-normal normal-case">Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique itaque et explicabo. Excepturi, repellat amet. Enim voluptatibus maiores magnam iusto repudiandae asperiores perferendis, explicabo molestias nemo corrupti recusandae et laudantium?</span>
+                <span className="font-normal normal-case">{sintomas}</span>
             </p>
         </div>
     )
