@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react';
 import Error from './error';
 
-function Formulario({pacientes, setPacientes, paciente}) {
+function Formulario({pacientes, setPacientes, paciente, setPaciente}) {
 
   //Es state se declara en la parte superior del componente
   const [nombre, setNombre] = useState('');//-> variable, set modificador valore inicial del estado
@@ -10,8 +10,24 @@ function Formulario({pacientes, setPacientes, paciente}) {
   const [fecha, setFecha] = useState('');
   const [sintomas, setSintomas] = useState('');
 
+  //Revisa cuanso el componente puede cambiar
+  useEffect(() => {
+    if (Object.keys(paciente).length > 0) {
+      setNombre(paciente.nombre);
+      setPropietario(paciente.propietario);
+      setEmail(paciente.email);
+      setFecha(paciente.fecha);  
+      setSintomas(paciente.sintomas);
+    }
+  }, [paciente]);//-> Se ejecuta solo cuando la dependencia cambia(parametro), y ejecuta el rerender
+
+  //Revisa cuando el componene haya cargado
+  // useEffect(() => {
+  //   console.log('El compinente esta')
+  // }, []);//-> Si va vacio revisa por la carga del componente
+
   const generarID = () =>{
-    const random = Math.random().toString(36);
+    const random = Math.random().toString(36).substring(2);
     const fecha = Date.now().toString(36);
 
     return random + fecha;
@@ -36,11 +52,26 @@ function Formulario({pacientes, setPacientes, paciente}) {
       propietario,
       email,
       fecha,
-      sintomas,
-      id: generarID()
+      sintomas
     }
 
-    setPacientes([...pacientes, objPaciente]);
+    if(paciente.id) {
+      //Editando Registro
+      objPaciente.id = paciente.id;
+
+      //Recorre hasta encontrar un id igual
+      const pacientesActualizados = pacientes.map( pacienteState => 
+        pacienteState.id === paciente.id ? objPaciente : pacienteState
+      );
+
+      setPacientes(pacientesActualizados);//Actualiza valor
+      setPaciente({});//Resetea state
+
+    }else{
+      //Nuevo Registro
+      objPaciente.id = generarID();
+      setPacientes([...pacientes, objPaciente]);
+    }
 
     //Reiniciar el Form
     setNombre('');
@@ -144,7 +175,7 @@ function Formulario({pacientes, setPacientes, paciente}) {
             type='submit'
             className='bg-indigo-600 w-full p-3  text-white uppercase 
               hover:bg-indigo-700 cursor-pointer transition-colors font-bold' 
-            value="Agregar Paciente"
+            value={paciente.id ? 'Guardar Cambios' : 'Agregar Paciente'}
           />
         </form>
     </div>

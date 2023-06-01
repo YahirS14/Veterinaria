@@ -1,6 +1,23 @@
-function Paciente({paciente, setPaciente}) {
+import Swal from "sweetalert2";
 
-    const {nombre, propietario, email, fecha, sintomas} = paciente;
+function Paciente({paciente, setPaciente, eliminarPaciente}) {
+
+    const {nombre, propietario, email, fecha, sintomas, id} = paciente;
+
+    const handleEliminar = () => {
+        
+        Swal.fire({
+            title: '¿Deseas eliminar el paciente?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Si',
+            cancelButtonText: 'No'
+        }).then(resultado => {
+            if (resultado.isConfirmed){
+                eliminarPaciente(id);
+            }
+        })
+    }
 
     return (
 
@@ -24,6 +41,22 @@ function Paciente({paciente, setPaciente}) {
             <p className="font-bold mb-3 text-gray-700 uppercase">Sintomas:{''}
                 <span className="font-normal normal-case">{sintomas}</span>
             </p>
+
+            <div className="flex justify-between mt-10">
+                <button
+                    type="button"
+                    className="py-2 px-10 bg-indigo-600 hover:bg-indigo-700
+                        text-white font-bold uppercase rounded-lg"
+                    onClick={() => setPaciente(paciente)}
+                >Editar</button>
+
+                <button
+                    type="button"
+                    className="py-2 px-10 bg-red-600 hover:bg-red-700
+                        text-white font-bold uppercase rounded-lg"
+                    onClick={handleEliminar}
+                >Eliminar</button>
+            </div>
         </div>
     )
 }
