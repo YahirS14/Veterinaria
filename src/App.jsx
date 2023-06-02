@@ -5,20 +5,11 @@ import ListadoPacientes from "./Components/ListadoPacientes";
 
 function App() {
 
-  const [pacientes, setPacientes] = useState([]);
+  const [pacientes, setPacientes] = useState(JSON.parse(localStorage
+    .getItem('pacientes')) ?? []);
   const [paciente, setPaciente] = useState({});
 
-  //Los effects se ejecutan en el orden en el que se declaran
-  useEffect(() => {
-    const obtenrLs = () => {
-      const pacientesLs = JSON.parse(localStorage.getItem('pacientes')) ?? [];
-      setPacientes(pacientesLs);
-    }
-
-    obtenrLs();
-  }, [])
-  
-
+  //Los effects se ejecutan en el orden en el que se declara
   useEffect(() => {
     localStorage.setItem('pacientes', JSON.stringify(pacientes));
   }, [pacientes]);
